@@ -10,29 +10,53 @@ resource "google_compute_network" "vpc_network" {
   name = "terraform-network"
 }
 
-resource "google_compute_instance" "vm_instance" {
-  name         = "terraform-instance"
+data "http" "icanhazip" {
+   url = "http://icanhazip.com"
+}
+
+resource "google_compute_firewall" "firewall-allow-ssh" {
+  name    = "allow-ssh"
+  network = google_compute_network.vpc_network.self_link
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+  source_ranges = ["${trimspace(data.http.icanhazip.body)}/32"]
+}
+
+resource "google_compute_instance" "jmpbx" {
+  name         = "jmpbx"
   machine_type = var.machine_types[var.environment]
   tags         = ["web", "dev"]
 
-  provisioner "local-exec" {
-    command = "echo ${google_compute_instance.vm_instance.name}:  ${google_compute_instance.vm_instance.network_interface[0].access_config[0].nat_ip} >> ip_address.txt"
-  }
-
   boot_disk {
     initialize_params {
-      image = "cos-cloud/cos-stable"
+      image = "debian-cloud/debian-9"
     }
   }
 
   network_interface {
     network = google_compute_network.vpc_network.self_link
     access_config {
-      nat_ip = google_compute_address.vm_static_ip.address
+      nat_ip = google_compute_address.jmpbx_ip.address
     }
   }
 }
 
-resource "google_compute_address" "vm_static_ip" {
-  name = "terraform-static-ip"
+resource "google_compute_address" "jmpbx_ip" {
+  name = "jmpbx-ip"
+}
+
+# OSLogin configuration - to allow external SSH access
+
+resource "google_compute_project_metadata_item" "oslogin" {
+  project = var.project
+  key     = "enable-oslogin"
+  value   = "TRUE"
+}
+
+resource "google_project_iam_member" "role-binding" {
+  project = var.project
+  role    = "roles/compute.osAdminLogin"
+  member  = "user:${var.email}"
 }

@@ -4,6 +4,10 @@ These terraform scripts are designed to allow development environments to be eas
 
 `.creds` folder should include a copy of the GCP service account credentials for this to work.
 
+# Setup
+
+When creating a service account for the terraform jobs, grant it the `Security Admin` permission.
+
 # TODO
 
 * Create a jumpbox and ssh via it into the cloud
