@@ -10,6 +10,8 @@ resource "google_compute_network" "vpc_network" {
   name = "terraform-network"
 }
 
+# Firewall only allows ssh connections to the box from the public ip of
+# the local machine
 data "http" "icanhazip" {
    url = "http://icanhazip.com"
 }
@@ -19,7 +21,7 @@ resource "google_compute_firewall" "firewall-allow-ssh" {
   network = google_compute_network.vpc_network.self_link
   allow {
     protocol = "tcp"
-    ports    = ["22"]
+    ports    = ["65432"]
   }
   source_ranges = ["${trimspace(data.http.icanhazip.body)}/32"]
 }
@@ -31,7 +33,7 @@ resource "google_compute_instance" "jmpbx" {
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-9"
+      image = "jmpbx"
     }
   }
 
