@@ -16,14 +16,27 @@ data "http" "icanhazip" {
    url = "http://icanhazip.com"
 }
 
-resource "google_compute_firewall" "firewall-allow-ssh" {
-  name    = "allow-ssh"
+# Allow connections to jumpbox only via the custom ssh port
+# And only your current ip
+resource "google_compute_firewall" "external-jumpbox-allow-ssh" {
+  name    = "external-jumpbox-allow-ssh"
   network = google_compute_network.vpc_network.self_link
   allow {
     protocol = "tcp"
     ports    = ["65432"]
   }
   source_ranges = ["${trimspace(data.http.icanhazip.body)}/32"]
+}
+
+# Allow internal connections from jumpbox to internal ssh port
+resource "google_compute_firewall" "internal-allow-ssh" {
+  name    = "internal-allow-ssh"
+  network = google_compute_network.vpc_network.self_link
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+  source_ranges = ["${google_compute_instance.jmpbx.network_interface[0].network_ip}/32"]
 }
 
 resource "google_compute_instance" "jmpbx" {

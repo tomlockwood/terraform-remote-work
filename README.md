@@ -12,5 +12,6 @@ Create an image for the jumpbox by changing the ssh port on an instance to 65432
 
 # TODO
 
-* Make it easy to create a new container for use as a development environment (Modules in each repo???)
-* Boot a development environment built to a repository's specifications, and then clone that repository into that environment
+* Make it easy to create a new disk image for use as a development environment
+* Keep images and boot an instance for them using a conditional apply statement (image name is repo name)
+* Make ssh work to target internal IP from vscode SSH extension
