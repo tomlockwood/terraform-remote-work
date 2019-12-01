@@ -12,6 +12,7 @@ Create an image for the jumpbox by changing the ssh port on an instance to 65432
 
 # TODO
 
+* Split network, jumpbox, and devboxes into separate terraform folders
 * Make it easy to create a new disk image for use as a development environment
 * Keep images and boot an instance for them using a conditional apply statement (image name is repo name)
 * Make ssh work to target internal IP from vscode SSH extension

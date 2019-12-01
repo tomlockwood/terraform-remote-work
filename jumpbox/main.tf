@@ -1,13 +1,18 @@
 provider "google" {
-  credentials = file(var.credentials_file)
+  credentials = file("../${var.credentials_file}")
 
   project = var.project
   region  = var.region
   zone    = var.zone
 }
 
-resource "google_compute_network" "vpc_network" {
-  name = "terraform-network"
+# Local state
+data "terraform_remote_state" "local_backend" {
+  backend = "local"
+
+  config = {
+    path = "../terraform.tfstate"
+  }
 }
 
 # Firewall only allows ssh connections to the box from the public ip of
@@ -20,7 +25,7 @@ data "http" "icanhazip" {
 # And only your current ip
 resource "google_compute_firewall" "external-jumpbox-allow-ssh" {
   name    = "external-jumpbox-allow-ssh"
-  network = google_compute_network.vpc_network.self_link
+  network = data.terraform_remote_state.local_backend.outputs.network
   allow {
     protocol = "tcp"
     ports    = ["65432"]
@@ -31,7 +36,7 @@ resource "google_compute_firewall" "external-jumpbox-allow-ssh" {
 # Allow internal connections from jumpbox to internal ssh port
 resource "google_compute_firewall" "internal-allow-ssh" {
   name    = "internal-allow-ssh"
-  network = google_compute_network.vpc_network.self_link
+  network = data.terraform_remote_state.local_backend.outputs.network
   allow {
     protocol = "tcp"
     ports    = ["22"]
@@ -42,7 +47,7 @@ resource "google_compute_firewall" "internal-allow-ssh" {
 # jmpbx image must accept ssh connections on port 65432
 resource "google_compute_instance" "jmpbx" {
   name         = "jmpbx"
-  machine_type = var.machine_types[var.environment]
+  machine_type = "f1-micro"
   tags         = ["web", "dev"]
 
   boot_disk {
@@ -52,27 +57,9 @@ resource "google_compute_instance" "jmpbx" {
   }
 
   network_interface {
-    network = google_compute_network.vpc_network.self_link
+    network = data.terraform_remote_state.local_backend.outputs.network
     access_config {
-      nat_ip = google_compute_address.jmpbx_ip.address
+      nat_ip = data.terraform_remote_state.local_backend.outputs.jmpbx_ip
     }
   }
-}
-
-resource "google_compute_address" "jmpbx_ip" {
-  name = "jmpbx-ip"
-}
-
-# OSLogin configuration - to allow external SSH access
-
-resource "google_compute_project_metadata_item" "oslogin" {
-  project = var.project
-  key     = "enable-oslogin"
-  value   = "TRUE"
-}
-
-resource "google_project_iam_member" "role-binding" {
-  project = var.project
-  role    = "roles/compute.osAdminLogin"
-  member  = "user:${var.email}"
 }
