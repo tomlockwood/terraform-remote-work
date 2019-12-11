@@ -6,13 +6,6 @@ provider "google" {
   zone    = var.zone
 }
 
-terraform {
-  backend "gcs" {
-    bucket = "terraform_backend_${var.project}"
-    prefix = var.repository
-  }
-}
-
 resource "google_compute_disk" "devdisk" {
   size = "10"
   name  = var.repository
