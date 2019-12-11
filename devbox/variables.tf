@@ -8,7 +8,8 @@ variable "region" { }
 
 variable "zone" { }
 
+variable "repository" { }
+
 # Variables below come from setup
-variable "jmpbx_ip" { }
 
 variable "network" { }

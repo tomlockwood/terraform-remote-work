@@ -1,3 +1,4 @@
 .creds/
 .terraform/
 *.tfstate*
+*_outputs.json

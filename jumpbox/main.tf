@@ -6,15 +6,6 @@ provider "google" {
   zone    = var.zone
 }
 
-# Local state
-data "terraform_remote_state" "local_backend" {
-  backend = "local"
-
-  config = {
-    path = "../terraform.tfstate"
-  }
-}
-
 # Firewall only allows ssh connections to the box from the public ip of
 # the local machine
 data "http" "icanhazip" {
@@ -25,7 +16,7 @@ data "http" "icanhazip" {
 # And only your current ip
 resource "google_compute_firewall" "external-jumpbox-allow-ssh" {
   name    = "external-jumpbox-allow-ssh"
-  network = data.terraform_remote_state.local_backend.outputs.network
+  network = var.network
   allow {
     protocol = "tcp"
     ports    = ["65432"]
@@ -36,7 +27,7 @@ resource "google_compute_firewall" "external-jumpbox-allow-ssh" {
 # Allow internal connections from jumpbox to internal ssh port
 resource "google_compute_firewall" "internal-allow-ssh" {
   name    = "internal-allow-ssh"
-  network = data.terraform_remote_state.local_backend.outputs.network
+  network = var.network
   allow {
     protocol = "tcp"
     ports    = ["22"]
@@ -57,9 +48,9 @@ resource "google_compute_instance" "jmpbx" {
   }
 
   network_interface {
-    network = data.terraform_remote_state.local_backend.outputs.network
+    network = var.network
     access_config {
-      nat_ip = data.terraform_remote_state.local_backend.outputs.jmpbx_ip
+      nat_ip = var.jmpbx_ip
     }
   }
 }
