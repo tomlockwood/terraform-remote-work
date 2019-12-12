@@ -1,0 +1,3 @@
+#!/bin/sh
+
+./tf devbox $2 "$3 -var=repository=$1"

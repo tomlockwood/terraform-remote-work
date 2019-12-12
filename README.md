@@ -36,6 +36,8 @@ The tf script:
 
 # TODO
 
+* Create interpolated ssh_config
+* Check whether internal instances have internet access to download stuff with
 * Remove `.json` extension from output files
 * Write a terraform script for making a generic devbox that uses an image with the repo as an argument
 * Make ssh work to target internal IP from vscode SSH extension
