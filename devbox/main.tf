@@ -18,5 +18,8 @@ resource "google_compute_instance" "devbox" {
 
   network_interface {
     network = var.network
+    access_config {
+      // Ephemeral IP
+    }
   }
 }

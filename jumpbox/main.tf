@@ -35,6 +35,10 @@ resource "google_compute_firewall" "internal-allow-ssh" {
   source_ranges = ["${google_compute_instance.jmpbx.network_interface[0].network_ip}/32"]
 }
 
+resource "google_compute_address" "jmpbx_ip" {
+  name = "jmpbx-ip"
+}
+
 # jmpbx image must accept ssh connections on port 65432
 resource "google_compute_instance" "jmpbx" {
   name         = "jmpbx"
@@ -50,7 +54,7 @@ resource "google_compute_instance" "jmpbx" {
   network_interface {
     network = var.network
     access_config {
-      nat_ip = var.jmpbx_ip
+      nat_ip = google_compute_address.jmpbx_ip.address
     }
   }
 }

@@ -10,10 +10,6 @@ resource "google_compute_network" "vpc_network" {
   name = "terraform-network"
 }
 
-resource "google_compute_address" "jmpbx_ip" {
-  name = "jmpbx-ip"
-}
-
 # OSLogin configuration - to allow external SSH access
 
 resource "google_compute_project_metadata_item" "oslogin" {
