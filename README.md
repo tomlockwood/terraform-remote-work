@@ -24,21 +24,25 @@ The tf script:
  - Returns to the main directory
  - Puts all outputs into the `*_outputs.json` file, with the first argument replacing the star
 
- # Using the ./diskcmd script
+# Using the ./diskcmd script
 
- This script creates a disk for any repository you want a separated development environment for.  The reason this occurs slightly differently to a regular `apply` or `destroy` command is that terraform has some trouble dynamically storing state in dynamically interpolated state file names.
+This script creates a disk for any repository you want a separated development environment for.  The reason this occurs slightly differently to a regular `apply` or `destroy` command is that terraform has some trouble storing state in dynamically interpolated state file names.
 
- The diskcmd script:
+The diskcmd script:
  - Creates a directory in the `devdisk` directory named after the first argument (`repository` name) if none exists
  - Moves any files in the repository-named dir to the `devdisk` dir
  - Runs the ./tf script for the `devdisk` directory, passing it the `repository` as a variable
  - Moves the state for the devdisk to the repository-named dir
 
+# Using the ./boxcmd script
+
+This script creates an instance that points at a `devdisk`.
+
+The boxcmd script:
+ - Acts identically to the `tf` script, but the first argument is the devdisk name
+ - It always acts on the devbox folder
+
 # TODO
 
 * Retry on a new project
-* Create interpolated ssh_config
 * Automate key transfer to a new devbox
-* Remove `.json` extension from output files
-* Write a terraform script for making a generic devbox that uses an image with the repo as an argument
-* Make ssh work to target internal IP from vscode SSH extension
