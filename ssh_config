@@ -1,5 +1,0 @@
-Host devbox
-  Hostname 10.152.0.6
-  User axismech_gmail_com
-  ProxyCommand ssh axismech_gmail_com@35.197.173.223 -p 65432 -A -W %h:%p 
-  Port 22

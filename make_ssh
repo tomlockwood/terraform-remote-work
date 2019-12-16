@@ -1,0 +1,14 @@
+#!/bin/sh
+
+home=/home/tom
+jmpbx_ip=$( cat jumpbox_outputs.json | jq -r .jmpbx_ip.value )
+devbox_ip=$( cat devbox_outputs.json | jq -r .devbox_ip.value )
+
+ssh-keygen -f "$home/.ssh/known_hosts" -R "[$jmpbx_ip]:65432"
+ssh-keygen -f "$home/.ssh/known_hosts" -R "$devbox_ip"
+
+echo "Host devbox" > ssh_config
+echo "  Hostname $devbox_ip" >> ssh_config
+echo "  User axismech_gmail_com" >> ssh_config
+echo "  ProxyCommand ssh axismech_gmail_com@$jmpbx_ip -p 65432 -A -W %h:%p" >> ssh_config
+echo "  Port 22" >> ssh_config
