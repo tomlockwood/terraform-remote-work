@@ -8,6 +8,13 @@ When creating a service account for the terraform jobs, grant it the `Security A
 
 `.creds` folder should include a copy of the GCP service account credentials for this to work.
 
+`terraform.tfvars` should contain:
+ - project = "google-project-name"
+ - credentials_file = ".creds/service-account-creds.json"
+ - region = "google-region1"
+ - zone = "google-zone1-x"
+ - email = "google-account-email-for-ssh-login@gmail.com"
+
 Create an image for the jumpbox by changing the ssh port on an instance to 65432 and make an image from that disk, and name that image `jmpbx`.
 
 `make add-oslogin-key` adds your oslogin key from `gcloud` to allow ssh access.
