@@ -1,12 +1,19 @@
 #!/bin/sh
 
+# Set to your unix HOME directory path
 home=/home/tom
+
+# Reads variables from previous terraform outputs
 jmpbx_ip=$( cat jumpbox_outputs.json | jq -r .jmpbx_ip.value )
 devbox_ip=$( cat devbox_outputs.json | jq -r .devbox_ip.value )
 
+# Removes any ssh server entries from known hosts if they exist
+# If this isn't done the new servers fingerprint may not match
+# Leading to an inability to connect
 ssh-keygen -f "$home/.ssh/known_hosts" -R "[$jmpbx_ip]:65432"
 ssh-keygen -f "$home/.ssh/known_hosts" -R "$devbox_ip"
 
+# Generates a new custom ssh_config file
 echo "Host devbox" > ssh_config
 echo "  Hostname $devbox_ip" >> ssh_config
 echo "  User axismech_gmail_com" >> ssh_config

@@ -49,7 +49,18 @@ The boxcmd script:
  - Acts identically to the `tf` script, but the first argument is the devdisk name
  - It always acts on the devbox folder
 
+ # Using the ./make_ssh script
+
+This script creates a custom ssh_config file you can point SSH at.
+
+The make_ssh script:
+ - Gathers outputs from `setup` and the `devbox` that is applied currently
+ - Writes a new file to `ssh_config` in the base directory of this repository
+
+ This script can be used either as an input to the ssh command (e.g. `ssh -F ssh_config devbox`) or can be pointed to by another tool, like the VSCode `Remote - SSH` extension.
+
 # TODO
 
+* Run gcloud commands for initial service account setup and keygen
 * Retry on a new project
 * Automate key transfer to a new devbox
