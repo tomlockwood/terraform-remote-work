@@ -1,4 +1,6 @@
 #!/bin/sh
+# Run this on your local machine to generate a key for github
+# https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account
 
 gcloud services enable secretmanager.googleapis.com
 ssh-keygen -t rsa -b 4096 -C "$1" -f github_cloud_rsa

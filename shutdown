@@ -1,0 +1,4 @@
+#!/bin/sh
+
+./boxcmd $1 destroy -auto-approve
+./tf jumpbox destroy -auto-approve

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+./tf jumpbox apply -auto-approve
+./boxcmd $1 apply -auto-approve
+./make_ssh
