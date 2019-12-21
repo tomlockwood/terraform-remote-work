@@ -61,6 +61,7 @@ The make_ssh script:
 
 # TODO
 
+* Convert roles/compute.osAdminLogin in setup into gcloud line so ServiceAccount doesn't need security permission
 * Run gcloud commands for initial service account setup and keygen
 * Retry on a new project
 * Automate key transfer to a new devbox
