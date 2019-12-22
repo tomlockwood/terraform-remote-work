@@ -4,18 +4,17 @@ These terraform scripts are designed to allow development environments to be eas
 
 # Setup
 
-When creating a service account for the terraform jobs, grant it the `Security Admin` permission.
+Install `gcloud` and run `gcloud auth login`.
 
-`.creds` folder should include a copy of the GCP service account credentials for this to work.
+Run `./init` with arguments in the following order:
+1) Desired project id
+2) GCP account e-mail address - as set in the `gcloud auth login` flow
+3) Desired region (e.g. `australia-southeast1`)
+4) Desired zone (e.g. `australia-southeast1-b`)
 
-`terraform.tfvars` should contain:
- - project = "google-project-name"
- - credentials_file = ".creds/service-account-creds.json"
- - region = "google-region1"
- - zone = "google-zone1-x"
- - email = "google-account-email-for-ssh-login@gmail.com"
+Create an image for the jumpbox by changing the ssh port on an instance one you like and make an image from that disk, and name that image `jmpbx`.
 
-Create an image for the jumpbox by changing the ssh port on an instance to 65432 and make an image from that disk, and name that image `jmpbx`.
+TODO: Set the port in the required locations in the terraform script.
 
 `make add-oslogin-key` adds your oslogin key from `gcloud` to allow ssh access.
 

@@ -19,9 +19,3 @@ resource "google_compute_project_metadata_item" "oslogin" {
   key     = "enable-oslogin"
   value   = "TRUE"
 }
-
-resource "google_project_iam_member" "role-binding" {
-  project = var.project
-  role    = "roles/compute.osAdminLogin"
-  member  = "user:${var.email}"
-}

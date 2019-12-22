@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# $1 project id
+# $2 email
+# $3 region
+# $4 zone
+
+gcloud iam service-accounts keys create .creds/$1.json --iam-account "$1-terraform@$1.iam.gserviceaccount.com"
+gcloud projects add-iam-policy-binding $1 --member user:$2 --role roles/compute.osAdminLogin
+
+echo " project = \"$1\"" > tf.tfvars
+echo " credentials_file = \".creds/$1.json\"" >> tf.tfvars
+echo " email = \"$2\""
+echo " region = \"$3\""
+echo " zone = \"$4\""
