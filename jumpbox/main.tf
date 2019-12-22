@@ -11,7 +11,7 @@ provider "google" {
 # Firewall only allows ssh connections to the box from the public ip of
 # the local machine
 data "http" "icanhazip" {
-   url = "http://icanhazip.com"
+   url = "http://ipv4.icanhazip.com"
 }
 
 # Allow connections to jumpbox only via the custom ssh port

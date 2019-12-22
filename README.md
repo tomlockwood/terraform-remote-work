@@ -15,6 +15,7 @@ Run `./init` with arguments in the following order:
 Create an image for the jumpbox by changing the ssh port on an instance one you like and make an image from that disk, and name that image `jmpbx`.
 
 TODO: Set the port in the required locations in the terraform script.
+TODO: Make sure the oslogin ssh key is generated???
 
 `make add-oslogin-key` adds your oslogin key from `gcloud` to allow ssh access.
 
@@ -58,9 +59,12 @@ The make_ssh script:
 
  This script can be used either as an input to the ssh command (e.g. `ssh -F ssh_config devbox`) or can be pointed to by another tool, like the VSCode `Remote - SSH` extension.
 
+# Github key transfer
+
+TODO
+
 # TODO
 
-* Convert roles/compute.osAdminLogin in setup into gcloud line so ServiceAccount doesn't need security permission
-* Run gcloud commands for initial service account setup and keygen
 * Retry on a new project
-* Automate key transfer to a new devbox
+* Run gcloud commands for initial project, service account setup, osLogin permissions and keygen
+* Add ssh tunnelling for server ports to local with configurable ports
