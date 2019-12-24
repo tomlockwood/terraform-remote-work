@@ -67,4 +67,6 @@ TODO
 
 * Retry on a new project
 * Run gcloud commands for initial project, service account setup, osLogin permissions and keygen
-* Add ssh tunnelling for server ports to local with configurable ports
+* NAT in a separate script, with an argument on "startup" script to enable it - remove devbox external IP
+* Optional scheduled job in gcp to shutdown all infra at a preset time???
+* Split ssh_config so someone could `ssh jumpbox` or `ssh devbox`

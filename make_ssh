@@ -19,3 +19,6 @@ echo "  Hostname $devbox_ip" >> ssh_config
 echo "  User axismech_gmail_com" >> ssh_config
 echo "  ProxyCommand ssh axismech_gmail_com@$jmpbx_ip -p 65432 -A -W %h:%p" >> ssh_config
 echo "  Port 22" >> ssh_config
+# Forwards port 8080 from the devbox to 65430 on localhost
+# TODO: Allow configuration
+echo "  LocalForward 65430 $devbox_ip:8080" >> ssh_config
