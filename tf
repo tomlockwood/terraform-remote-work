@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# Outputs an export statement for each key in a terraform json outputs file
 json_cat() {
   local f="$1"
   cat $f | jq -r 'keys[] as $k | "export TF_VAR_\($k)=\"\(.[$k] | .value)\"" '
