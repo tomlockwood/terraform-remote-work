@@ -1,0 +1,10 @@
+#!/bin/sh
+# Run these commands on the devbox to get github access
+
+# May be required if beta command for secrets doesn't work
+gcloud components update
+mkdir -p ./ssh
+gcloud beta secrets versions access latest --secret=github_cloud_rsa > .ssh/github_cloud_rsa
+eval "$(ssh-agent -s)"
+chmod 600 .ssh/github_cloud_rsa
+ssh-add .ssh/github_cloud_rsa

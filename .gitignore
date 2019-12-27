@@ -1,0 +1,6 @@
+.creds/
+.terraform/
+*.tfstate*
+*_outputs.json
+ssh_config
+terraform.tfvars

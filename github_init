@@ -1,0 +1,10 @@
+#!/bin/sh
+# Run this on your local machine to generate a key for github
+# https://help.github.com/en/github/authenticating-to-github/adding-a-new-ssh-key-to-your-github-account
+
+# $1 github e-mail
+
+gcloud services enable secretmanager.googleapis.com
+ssh-keygen -t rsa -b 4096 -C "$1" -f github_cloud_rsa
+cat github_cloud_rsa > gcloud beta secrets create github_cloud_rsa --replication-policy=automatic --data-file=-
+gcloud beta secrets versions access latest --secret=github_cloud_rsa

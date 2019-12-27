@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# Moves state from and to a subfolder for each repository
+
+mkdir -p ./devdisk/$1
+mv ./devdisk/$1/*.tfstate ./devdisk/
+./tf devdisk $2 "$3 -var=repository=$1"
+mv ./devdisk/*.tfstate ./devdisk/$1/
