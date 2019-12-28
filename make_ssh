@@ -6,6 +6,7 @@ home=/home/tom
 # Reads variables from previous terraform outputs
 jmpbx_ip=$( cat jumpbox_outputs.json | jq -r .jmpbx_ip.value )
 devbox_ip=$( cat devbox_outputs.json | jq -r .devbox_ip.value )
+username=$( cat setup_outputs.json | jq -r .ssh_user.value )
 
 # Removes any ssh server entries from known hosts if they exist
 # If this isn't done the new servers fingerprint may not match
@@ -16,8 +17,8 @@ ssh-keygen -f "$home/.ssh/known_hosts" -R "$devbox_ip"
 # Generates a new custom ssh_config file
 ssh_config=$( cat <<-_SSH_TEMPLATE_
 Hostname $devbox_ip\n
-  User my-google-account_gmail_com\n
-  ProxyCommand ssh my-google-account_gmail_com@${jmpbx_ip} -p 65432 -A -W %h:%p\n
+  User ${username}\n
+  ProxyCommand ssh ${username}@${jmpbx_ip} -p 65432 -A -W %h:%p\n
   Port 22\n
 # Example: Forwards port 8080 from the devbox to 65430 on localhost\n
   LocalForward 65430 ${devbox_ip}:8080
