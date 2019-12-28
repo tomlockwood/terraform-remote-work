@@ -16,7 +16,8 @@ ssh-keygen -f "$home/.ssh/known_hosts" -R "$devbox_ip"
 
 # Generates a new custom ssh_config file
 ssh_config=$( cat <<-_SSH_TEMPLATE_
-Hostname $devbox_ip\n
+Host devbox\n
+  Hostname $devbox_ip\n
   User ${username}\n
   ProxyCommand ssh ${username}@${jmpbx_ip} -p 65432 -A -W %h:%p\n
   Port 22\n
